@@ -1,0 +1,20 @@
+{
+  "users": {
+    "demo_user": {
+      "user_id": "user_demo_user_d1c3d0bb",
+      "username": "demo_user",
+      "password_hash": "sha256:1a568c472ac7e144a6aa7e0b098c14fa:1c73e73810c00a75fc68d7fa9b623e81d84d03221bd9c5cf406f1bcfd0fb07a7",
+      "created_at": "2025-12-27T12:39:28.083027",
+      "last_login": "2025-12-27T12:39:28.114635",
+      "records": {
+        "gomoku": {
+          "total_games": 1,
+          "wins": 0,
+          "losses": 1,
+          "draws": 0
+        }
+      },
+      "replay_ids": []
+    }
+  }
+}

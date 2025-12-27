@@ -1,6 +1,7 @@
 """Board and stone related classes."""
 from __future__ import annotations
 
+import copy
 from dataclasses import dataclass
 from enum import Enum
 from typing import Iterator, List, Tuple
@@ -31,8 +32,8 @@ class Board:
     """Represents a square board."""
 
     def __init__(self, size: int) -> None:
-        if size < 8 or size > 19:
-            raise ValueError("Board size must be between 8 and 19.")
+        if size < 4 or size > 19:
+            raise ValueError("Board size must be between 4 and 19.")
         self.size = size
         self.grid: List[List[Stone]] = [
             [Stone.EMPTY for _ in range(size)] for _ in range(size)
@@ -56,10 +57,21 @@ class Board:
         return self.get(row, col) == Stone.EMPTY
 
     def neighbors(self, row: int, col: int) -> Iterator[Tuple[int, int]]:
+        """获取四邻域（上下左右）。"""
         for dr, dc in ((1, 0), (-1, 0), (0, 1), (0, -1)):
             nr, nc = row + dr, col + dc
             if self.is_on_board(nr, nc):
                 yield nr, nc
+
+    def all_neighbors(self, row: int, col: int) -> Iterator[Tuple[int, int]]:
+        """获取八邻域（包括对角线），用于黑白棋。"""
+        for dr in (-1, 0, 1):
+            for dc in (-1, 0, 1):
+                if dr == 0 and dc == 0:
+                    continue
+                nr, nc = row + dr, col + dc
+                if self.is_on_board(nr, nc):
+                    yield nr, nc
 
     def count_stones(self, stone: Stone) -> int:
         return sum(cell == stone for row in self.grid for cell in row)
@@ -72,4 +84,8 @@ class Board:
         if len(snapshot) != self.size:
             raise ValueError("Snapshot size mismatch.")
         self.grid = [[cell for cell in row] for row in snapshot]
+
+    def clone(self) -> "Board":
+        """深拷贝棋盘。"""
+        return copy.deepcopy(self)
 

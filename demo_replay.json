@@ -1,0 +1,274 @@
+{
+  "version": "2.0",
+  "game_type": "gomoku",
+  "size": 6,
+  "current_player": "B",
+  "winner": "B",
+  "is_over": true,
+  "pass_count": 0,
+  "board": [
+    [
+      ".",
+      ".",
+      ".",
+      ".",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      ".",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      "W",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      "W",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      "W",
+      ".",
+      "."
+    ],
+    [
+      ".",
+      ".",
+      "B",
+      "W",
+      ".",
+      "."
+    ]
+  ],
+  "replay": {
+    "version": "2.0",
+    "metadata": {
+      "game_type": "gomoku",
+      "board_size": 6,
+      "black_player": "Guest",
+      "white_player": "Guest",
+      "start_time": "2025-12-27T12:40:12.444595",
+      "end_time": "2025-12-27T12:40:22.971152",
+      "result": "BLACK_WIN",
+      "total_moves": 9,
+      "user_id": null
+    },
+    "initial_board": [
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ]
+    ],
+    "moves": [
+      {
+        "move_number": 1,
+        "player": "WHITE",
+        "action_type": "move",
+        "position": [
+          2,
+          2
+        ],
+        "timestamp": 1766810413.5054169,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 2,
+        "player": "BLACK",
+        "action_type": "move",
+        "position": [
+          2,
+          3
+        ],
+        "timestamp": 1766810414.5657222,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 3,
+        "player": "WHITE",
+        "action_type": "move",
+        "position": [
+          3,
+          2
+        ],
+        "timestamp": 1766810415.623843,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 4,
+        "player": "BLACK",
+        "action_type": "move",
+        "position": [
+          3,
+          3
+        ],
+        "timestamp": 1766810416.679691,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 5,
+        "player": "WHITE",
+        "action_type": "move",
+        "position": [
+          4,
+          2
+        ],
+        "timestamp": 1766810417.743393,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 6,
+        "player": "BLACK",
+        "action_type": "move",
+        "position": [
+          4,
+          3
+        ],
+        "timestamp": 1766810418.7990248,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 7,
+        "player": "WHITE",
+        "action_type": "move",
+        "position": [
+          5,
+          2
+        ],
+        "timestamp": 1766810419.85587,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 8,
+        "player": "BLACK",
+        "action_type": "move",
+        "position": [
+          5,
+          3
+        ],
+        "timestamp": 1766810420.91211,
+        "board_snapshot": null
+      },
+      {
+        "move_number": 9,
+        "player": "BLACK",
+        "action_type": "move",
+        "position": [
+          1,
+          2
+        ],
+        "timestamp": 1766810422.9711301,
+        "board_snapshot": null
+      }
+    ],
+    "final_board": [
+      [
+        ".",
+        ".",
+        ".",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "B",
+        ".",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "B",
+        "W",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "B",
+        "W",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "B",
+        "W",
+        ".",
+        "."
+      ],
+      [
+        ".",
+        ".",
+        "B",
+        "W",
+        ".",
+        "."
+      ]
+    ]
+  }
+}

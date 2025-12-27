@@ -1,9 +1,10 @@
 """Abstract game definitions and shared logic."""
 from __future__ import annotations
 
+import copy
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Type
 
 from core.board import Board, Stone
 
@@ -25,7 +26,7 @@ class MoveDelta:
     row: int
     col: int
     player: Stone
-    captured: List[Tuple[int, int, Stone]]
+    captured: List[Tuple[int, int, Stone]]  # 围棋提子/黑白棋翻转记录
     message: str
     pre_state: GameState
 
@@ -45,14 +46,19 @@ class ResignRecord:
 
 
 class Game(ABC):
-    """Template for games that share turn-based flow."""
+    """Template for games that share turn-based flow.
+    
+    设计模式：模板方法模式
+    - execute_move() 定义通用流程骨架
+    - _apply_move() / _post_move() 由子类实现具体规则
+    """
 
     def __init__(self, size: int) -> None:
         self.board = Board(size)
         self.current_player: Stone = Stone.BLACK
         self.winner: Optional[Stone] = None
         self.is_over: bool = False
-        self.pass_count: int = 0  # used by Go
+        self.pass_count: int = 0  # used by Go and Othello
         self.history: List["Command"] = []
 
     @property
@@ -138,6 +144,35 @@ class Game(ABC):
     def pop_history(self) -> Optional["Command"]:
         return self.history.pop() if self.history else None
 
+    # ==================== 第二阶段新增方法 ====================
+    
+    def get_legal_moves(self) -> List[Tuple[int, int]]:
+        """获取当前玩家所有合法落子位置。
+        
+        默认实现：返回所有空位（适用于五子棋、围棋）。
+        黑白棋需要重写此方法。
+        """
+        if self.is_over:
+            return []
+        legal = []
+        for r in range(self.board.size):
+            for c in range(self.board.size):
+                if self.board.is_empty(r, c):
+                    legal.append((r, c))
+        return legal
+
+    def must_pass(self) -> bool:
+        """当前玩家是否必须 pass（无合法落子）。
+        
+        默认返回 False（五子棋、围棋不强制 pass）。
+        黑白棋需要重写此方法。
+        """
+        return False
+
+    def clone(self) -> "Game":
+        """深拷贝游戏状态，供 AI 模拟使用。"""
+        return copy.deepcopy(self)
+
 
 class Command(ABC):
     """Command pattern base."""
@@ -205,17 +240,50 @@ class ResignCommand(Command):
 
 
 class GameFactory:
-    """Simple factory to build games based on type string."""
+    """Factory with registry pattern to build games.
+    
+    设计模式：工厂方法 + 注册表模式
+    - 新增游戏类型只需调用 register()，无需修改工厂代码
+    - 符合开闭原则（OCP）
+    """
+    
+    _registry: Dict[str, Type[Game]] = {}
 
-    @staticmethod
-    def create(game_type: str, size: int) -> Game:
+    @classmethod
+    def register(cls, name: str, game_class: Type[Game]) -> None:
+        """注册游戏类型到工厂。"""
+        cls._registry[name.lower()] = game_class
+
+    @classmethod
+    def create(cls, game_type: str, size: int) -> Game:
+        """根据类型创建游戏实例。"""
         normalized = game_type.lower()
-        if normalized == "gomoku":
-            from core.gomoku import GomokuGame
+        if normalized in cls._registry:
+            return cls._registry[normalized](size)
+        raise GameError(f"Unknown game type: {game_type}. Available: {list(cls._registry.keys())}")
 
-            return GomokuGame(size)
-        if normalized == "go":
-            from core.go import GoGame
+    @classmethod
+    def get_available_games(cls) -> List[str]:
+        """获取所有可用的游戏类型。"""
+        return list(cls._registry.keys())
 
-            return GoGame(size)
-        raise GameError(f"Unknown game type: {game_type}")
+
+# ==================== 注册已有游戏类型 ====================
+def _register_builtin_games() -> None:
+    """延迟注册内置游戏，避免循环导入。"""
+    from core.gomoku import GomokuGame
+    from core.go import GoGame
+    
+    GameFactory.register("gomoku", GomokuGame)
+    GameFactory.register("go", GoGame)
+    
+    # 尝试注册黑白棋（如果存在）
+    try:
+        from core.othello import OthelloGame
+        GameFactory.register("othello", OthelloGame)
+    except ImportError:
+        pass
+
+
+# 模块加载时自动注册
+_register_builtin_games()
